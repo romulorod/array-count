@@ -1,10 +1,19 @@
-let count = 0;
 function arrayCount(array, element) {
-	for (let index = 0; index < array.length; index++) {
-		if (Array.isArray(array[index])) arrayCount(array[index], element);
-		if (array[index] === element) count++;
+	const flattenedArray = array.flat(Infinity);
+	for (let index = 0, count = 0; index < flattenedArray.length; index++) {
+		if (flattenedArray[index] === element) count++;
+		if (flattenedArray.length - 1 === index) return count;
 	}
-	return count;
 }
 
-module.exports = arrayCount;
+function arrayCountBenchmark(array, element) {
+	console.time("arrayCountBenchmark");
+	const flattenedArray = array.flat(Infinity);
+	for (let index = 0, count = 0; index < flattenedArray.length; index++) {
+		if (flattenedArray[index] === element) count++;
+		if (flattenedArray.length - 1 === index)
+			return console.timeEnd("arrayCountBenchmark"), count;
+	}
+}
+
+module.exports = { arrayCount, arrayCountBenchmark };
